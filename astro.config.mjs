@@ -53,7 +53,19 @@ export default defineConfig({
           },
           autogenerate: {
             directory: "editorguides",
+            collapsed: true,
           },
+          badge: "ページ作成中",
+        },
+        {
+          label: "ユーザーテスト",
+          translations: {
+            en: "User Testing",
+          },
+          autogenerate: {
+            directory: "user-test",
+          },
+          badge: "ページ作成中",
         },
       ],
     }),
