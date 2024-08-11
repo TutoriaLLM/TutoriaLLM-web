@@ -11,16 +11,17 @@ export default defineConfig({
         "./src/customColour.css",
       ],
       // このサイトのデフォルト言語として英語を設定します。
-      defaultLocale: "en",
+      defaultLocale: "root",
       locales: {
-        // 英語のドキュメントは`src/content/docs/en/`に置きます。
-        en: {
-          label: "English",
-        },
         // 日本語のドキュメントは`src/content/docs/ja/`に置きます。
-        ja: {
+        root: {
           label: "日本語",
           lang: "ja",
+        },
+        //英語のドキュメントは`src/content/docs/en/`に置きます。
+        en: {
+          label: "English",
+          lang: "en",
         },
       },
       social: {
@@ -28,27 +29,27 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: "Introduction",
+          label: "はじめに",
           translations: {
-            ja: "はじめに",
+            en: "Introduction",
           },
           autogenerate: {
             directory: "introduction",
           },
         },
         {
-          label: "User Guide",
+          label: "ユーザーガイド",
           translations: {
-            ja: "ユーザーガイド",
+            en: "User Guide",
           },
           autogenerate: {
             directory: "userguides",
           },
         },
         {
-          label: "Editor Guide",
+          label: "エディターガイド",
           translations: {
-            ja: "エディターガイド",
+            en: "Editor Guide",
           },
           autogenerate: {
             directory: "editorguides",
