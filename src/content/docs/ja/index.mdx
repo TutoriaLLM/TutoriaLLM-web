@@ -1,0 +1,34 @@
+---
+title: TutoriaLLMへようこそ
+description: プログラミングのチュートリアルを簡単に作成し、提供することができるフレームワークです。
+template: splash
+hero:
+  tagline: プログラミングのチュートリアルを簡単に作成し、LLMを利用してユーザーに提供することができるフレームワークです。
+  image:
+    file: ../../../assets/houston.webp
+  actions:
+    - text: デモで試す
+      link: https://demo.tutoriaLLM.com
+      icon: right-arrow
+      variant: primary
+    - text: ドキュメントを読む
+      link: /ja/introduction
+      icon: right-arrow
+      variant: secondary
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+## Lets get started
+
+<CardGrid stagger>
+  <Card title="自分のアプリをデプロイする" icon="github">
+    [GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM)から初めるか、[エディターガイド](/ja/editorguides/introduction)を参照してください。
+  </Card>
+  <Card title="デモを体験する" icon="external">
+    いくつかのチュートリアルを試せる[TutoriaLLMのデモ](https://demo.tutoriaLLM.com)に触れてみましょう。
+  </Card>
+  <Card title="アプリの使い方について知る" icon="open-book">
+    [TutoriaLLMについて](/ja/introduction)や、[ユーザーガイド](/ja/userguides/introduction)からアプリの使い方について学びましょう。
+  </Card>
+</CardGrid>
