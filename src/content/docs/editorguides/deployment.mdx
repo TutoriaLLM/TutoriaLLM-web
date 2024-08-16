@@ -1,0 +1,108 @@
+---
+title: Docker Composeを利用してサーバーにデプロイする
+description: Docker compose を使用して、TutoriaLLM アプリをサーバーにデプロイする方法を説明します。
+sidebar:
+  order: 2
+---
+
+import {
+  LinkCard,
+  Card,
+  CardGrid,
+  Aside,
+  Icon,
+  Code,
+} from "@astrojs/starlight/components";
+
+## アプリをサーバーにデプロイする
+
+### デプロイ先のサーバーの準備
+
+<Aside type="caution" title="注意！">
+  注意：SSL が必須のプラットフォームにデプロイすると、Minecraft-Core
+  拡張機能が正常に動作しない可能性があります。Minecrtaft
+  の`/connect`コマンド自体が SSL
+  に対応していないため、現時点においてこの問題を解決するためには、SSL
+  を無効にするか、Minecraft-Core 拡張機能を無効にする必要があります。
+</Aside>
+
+### compose ファイルの作成
+
+import composeProdExample from "./code/docker-compose.prod.yml?raw";
+
+以下は開発に利用できる`docker-compose.yml`ファイルの例です：
+
+<Aside type="note" title="ノート">
+  このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
+  の`docker-compose.prod.yml`ファイルを参照しています。このファイルは、リバースプロキシを利用してセキュアな接続を確保したアプリを稼働させるために必要な環境変数を設定しています。
+</Aside>
+
+<Code code={composeProdExample} lang="yaml" title="/docker-compose.yml" />
+
+### 環境変数の設定
+
+サーバーでホストして稼働させる場合は以下のコマンドで実稼働アプリをビルドし、起動させます。アプリを稼働させるには以下の環境変数が必要です：
+
+- AUTH_SECRET - 認証設定で使用するシークレット
+- OPENAI_API_KEY - GPT を使用するためのキー
+
+- DB_USER - データベースのユーザー名
+- DB_PASSWORD - データベースのパスワード
+- DB_PORT - データベースのポート番号
+- DB_HOST - データベースのホスト名。
+- DB_NAME - データベースの名前。
+
+- SERVER_PORT - アプリが使用するポート番号
+- VM_PORT - VM が使用するポート番号
+
+- REDIS_HOST - Redis のホスト名
+
+- DEFAULT_USER_NAME - デフォルトのユーザー名。
+- DEFAULT_USER_PASSWORD - デフォルトのユーザーパスワード。
+
+- DOMAIN - アプリのドメイン名。自動 SSL 設定に利用します
+- EMAIL - アプリのメールアドレス。自動 SSL 設定に利用します
+
+```sh
+docker compose -f docker-compose.prod.yml up
+```
+
+### Docker Hub から取得する
+
+[Docker
+Hub](https://hub.docker.com/r/soumame/code-tutorial-app)からイメージを取得することも可能です。PostgreSQL,
+Redis と接続する必要があります。
+
+### 認証情報と初期チュートリアルのリセット
+
+<Aside type="note" title="ノート">
+  これらのコマンドは初めて Docker compose
+  コマンドを実行した際に自動的に実行されます。`app`イメージ内の`.initialized`ファイルの存在を確認して、初期化が必要かどうかを判断しています。
+</Aside>
+
+必要がある場合は、コンテナ内の`app`イメージを起動させた状態で、以下のコマンドを実行してください。
+
+```sh
+npm run reset-credential
+```
+
+初期チュートリアル（拡張機能から提供されるチュートリアル）も以下の方法でリセットできます。このチュートリアルも自動で実行されているので、不要な場合は管理者画面から削除してください。
+
+```sh
+npm run reset-tutorial
+```
+
+### アプリの設定をする
+
+管理者画面にアクセスすることで、アプリの設定を変更することができます。設定は以下の項目があります：
+
+- ダッシュボード
+- チュートリアルの管理
+- セッションの一覧
+- ユーザーの一覧
+- サーバー設定
+
+#### アクセス方法
+
+- アプリを稼働させた状態で、`/admin`へアクセスします。
+- 初期ユーザー名とパスワードは`.env`ファイルに記載したものを使用してください。新規ユーザーを作成し、古いユーザーを削除することをお勧めします。

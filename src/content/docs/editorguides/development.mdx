@@ -1,0 +1,122 @@
+---
+title: Dockerを利用して開発する
+description: Docker compose を使用して、TutoriaLLM アプリを開発する方法を説明します。
+sidebar:
+  order: 1
+---
+
+import {
+  LinkCard,
+  Card,
+  CardGrid,
+  Aside,
+  Icon,
+  Code,
+} from "@astrojs/starlight/components";
+
+## Docker を利用した開発
+
+TutoriaLLM では、Docker compose を使用して、アプリを開発することができます。以下の手順からアプリを開発してみましょう。
+
+<Aside type="note" title="Dockerについて">
+  Dockerについての情報は、[Docker](https://www.docker.com/)の公式サイトを参照してください。
+</Aside>
+
+### リポジトリのクローン
+
+GitHub リポジトリをクローンして、開発を行います。お好みのエディタを使用してコードを編集し、Docker を利用したローカル環境でアプリを利用することができます。
+
+<LinkCard
+  title="GitHub リポジトリ"
+  description="TutoriaLLM の GitHub リポジトリを確認してください。"
+  href="https://github.com/TutoriaLLM/TutoriaLLM"
+/>
+
+また、アプリの実行には Docker が必要です。Docker をインストールしていない場合は、以下のリンクからインストールしてください。
+
+<LinkCard
+  title="Docker のインストール"
+  description="Docker をインストールする方法を確認してください。"
+  href="https://docs.docker.com/get-docker/"
+/>
+
+<Aside type="note" title="開発を行わない場合">
+  開発を行わない場合は、[Docker
+  Hub](https://hub.docker.com/r/soumame/code-tutorial-app)からイメージを利用できます。PostgreSQL,
+  Redis と接続する必要があります。
+</Aside>
+
+### compose ファイルの作成
+
+<Aside type="note" title="ノート">
+  このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
+  の`docker-compose.yml`ファイルを参照しています。このファイルは、開発向けのファイルのため、[実稼働アプリをビルドする](/editorguides/deployment)
+  場合は`docker-compose.prod.yml`ファイルを利用することをお勧めします。
+</Aside>
+
+import composeExample from "./code/docker-compose.yml?raw";
+
+以下は開発に利用できる`docker-compose.yml`ファイルの例です：
+
+<Code code={composeExample} lang="yaml" title="/docker-compose.yml" />
+
+### .env ファイルの作成
+
+`docker-compose.yml`ファイルと同じディレクトリに`.env`ファイルを作成してください。
+以下は 開発サーバーで必要な環境変数の例です：
+
+import envExample from "./code/.env.dev.example?raw";
+
+<Code code={envExample} lang="txt" title="/env.dev.example" />
+
+- AUTH_SECRET - 認証設定で使用するシークレット
+- OPENAI_API_KEY - GPT を使用するためのキー
+
+- DB_USER - データベースのユーザー名
+- DB_PASSWORD - データベースのパスワード
+- DB_PORT - データベースのポート番号
+- DB_HOST - データベースのホスト名。
+- DB_NAME - データベースの名前。
+
+- SERVER_PORT - アプリが使用するポート番号
+- VM_PORT - VM が使用するポート番号
+
+- REDIS_HOST - Redis のホスト名
+
+- DEFAULT_USER_NAME - デフォルトのユーザー名。
+- DEFAULT_USER_PASSWORD - デフォルトのユーザーパスワード。
+
+### サーバーの起動
+
+サーバーは Docker を利用してホストすることができます。以下のコマンドで開発サーバーを起動します：
+
+```sh
+
+docker compose up
+
+# ビルドを行う場合
+
+docker compose up --build
+
+# バックグラウンドで起動する場合
+
+docker compose up -d
+
+```
+
+### HMR の使用
+
+HMR(Hot Module Replacement)を使用したい場合は、以下のコマンドで起動します。ファイルを変更すると自動的にリロードされます。
+
+<Aside type="note" title="HMRとは">
+  HMR
+  は、ファイルを変更すると自動的にリロードされる機能です。TutoriaLLMでは`docker
+  conpose
+  watch`を利用することでDockerを再起動することなく、ファイルを変更することができます。
+</Aside>
+
+```sh
+
+docker compose watch
+
+```

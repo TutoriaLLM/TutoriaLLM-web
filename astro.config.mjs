@@ -45,6 +45,7 @@ export default defineConfig({
           autogenerate: {
             directory: "userguides",
           },
+          badge: "ページ作成中",
         },
         {
           label: "エディターガイド",
@@ -55,7 +56,6 @@ export default defineConfig({
             directory: "editorguides",
             collapsed: true,
           },
-          badge: "ページ作成中",
         },
         {
           label: "ユーザーテスト",
@@ -65,7 +65,6 @@ export default defineConfig({
           autogenerate: {
             directory: "user-test",
           },
-          badge: "ページ作成中",
         },
       ],
     }),
