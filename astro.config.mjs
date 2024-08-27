@@ -13,7 +13,7 @@ export default defineConfig({
       // このサイトのデフォルト言語として英語を設定します。
       defaultLocale: "root",
       locales: {
-        // 日本語のドキュメントは`src/content/docs/ja/`に置きます。
+        // 日本語のドキュメントは`src/content/docs/`に置きます。
         root: {
           label: "日本語",
           lang: "ja",

@@ -54,7 +54,7 @@ GitHub リポジトリをクローンして、開発を行います。お好み�
   場合は`docker-compose.prod.yml`ファイルを利用することをお勧めします。
 </Aside>
 
-import composeExample from "./code/docker-compose.yml?raw";
+import composeExample from "../../media/code/docker-compose.yml?raw";
 
 以下は開発に利用できる`docker-compose.yml`ファイルの例です：
 
@@ -65,7 +65,7 @@ import composeExample from "./code/docker-compose.yml?raw";
 `docker-compose.yml`ファイルと同じディレクトリに`.env`ファイルを作成してください。
 以下は 開発サーバーで必要な環境変数の例です：
 
-import envExample from "./code/.env.dev.example?raw";
+import envExample from "../../media/code/.env.dev.example?raw";
 
 <Code code={envExample} lang="txt" title="/env.dev.example" />
 
@@ -77,9 +77,6 @@ import envExample from "./code/.env.dev.example?raw";
 - DB_PORT - データベースのポート番号
 - DB_HOST - データベースのホスト名。
 - DB_NAME - データベースの名前。
-
-- SERVER_PORT - アプリが使用するポート番号
-- VM_PORT - VM が使用するポート番号
 
 - REDIS_HOST - Redis のホスト名
 
@@ -103,6 +100,10 @@ docker compose up --build
 docker compose up -d
 
 ```
+
+<Aside type="note" title="ノート">
+  TutoriaLLMでは、3000をアプリに、3001をVM実行のエントリーポイントのポートとして使用しています。
+</Aside>
 
 ### HMR の使用
 

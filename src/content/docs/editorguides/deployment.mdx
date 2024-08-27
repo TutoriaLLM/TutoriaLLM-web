@@ -28,7 +28,7 @@ import {
 
 ### compose ファイルの作成
 
-import composeProdExample from "./code/docker-compose.prod.yml?raw";
+import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 
 以下は開発に利用できる`docker-compose.yml`ファイルの例です：
 
@@ -37,7 +37,7 @@ import composeProdExample from "./code/docker-compose.prod.yml?raw";
   の`docker-compose.prod.yml`ファイルを参照しています。このファイルは、リバースプロキシを利用してセキュアな接続を確保したアプリを稼働させるために必要な環境変数を設定しています。
 </Aside>
 
-<Code code={composeProdExample} lang="yaml" title="/docker-compose.yml" />
+<Code code={composeProdExample} lang="yaml" title="./docker-compose.yml" />
 
 ### 環境変数の設定
 
@@ -52,9 +52,6 @@ import composeProdExample from "./code/docker-compose.prod.yml?raw";
 - DB_HOST - データベースのホスト名。
 - DB_NAME - データベースの名前。
 
-- SERVER_PORT - アプリが使用するポート番号
-- VM_PORT - VM が使用するポート番号
-
 - REDIS_HOST - Redis のホスト名
 
 - DEFAULT_USER_NAME - デフォルトのユーザー名。
@@ -66,6 +63,10 @@ import composeProdExample from "./code/docker-compose.prod.yml?raw";
 ```sh
 docker compose -f docker-compose.prod.yml up
 ```
+
+<Aside type="note" title="ノート">
+  TutoriaLLMでは、3000をアプリに、3001をVM実行のエントリーポイントのポートとして使用し、Traefikを使用してリバースプロキシを設定しています。
+</Aside>
 
 ### Docker Hub から取得する
 
