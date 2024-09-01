@@ -1,5 +1,5 @@
 ---
-title: Docker Composeを利用してサーバーにデプロイする
+title: サーバーにデプロイする
 description: Docker compose を使用して、TutoriaLLM アプリをサーバーにデプロイする方法を説明します。
 sidebar:
   order: 2
@@ -21,7 +21,7 @@ import {
 <Aside type="caution" title="注意！">
   注意：SSL が必須のプラットフォームにデプロイすると、Minecraft-Core
   拡張機能が正常に動作しない可能性があります。Minecrtaft
-  の`/connect`コマンド自体が SSL
+  の`/connect`コマンド自体が SSL(HTTPS)
   に対応していないため、現時点においてこの問題を解決するためには、SSL
   を無効にするか、Minecraft-Core 拡張機能を無効にする必要があります。
 </Aside>
@@ -34,7 +34,7 @@ import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 
 <Aside type="note" title="ノート">
   このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
-  の`docker-compose.prod.yml`ファイルを参照しています。このファイルは、リバースプロキシを利用してセキュアな接続を確保したアプリを稼働させるために必要な環境変数を設定しています。
+  の`docker-compose.prod.yml`ファイルを参照しています。このファイルは、リバースプロキシを利用してセキュアな接続を確保したアプリを稼働させるために必要な環境変数を設定しています。また、Watchtowerを使用して、アプリの自動更新を行う設定も含まれています。
 </Aside>
 
 <Code code={composeProdExample} lang="yaml" title="./docker-compose.yml" />
@@ -61,7 +61,11 @@ import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 - EMAIL - アプリのメールアドレス。自動 SSL 設定に利用します
 
 ```sh
-docker compose -f docker-compose.prod.yml up
+docker compose up
+
+## バックグラウンドで起動する場合
+docker compose up -d
+
 ```
 
 <Aside type="note" title="ノート">
