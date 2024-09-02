@@ -16,7 +16,11 @@ import {
 
 ## アプリをサーバーにデプロイする
 
+アプリは Docker イメージとして提供されており、Docker compose などを使用してサーバーにデプロイすることができます。以下の手順に従ってアプリをサーバーにデプロイしてください。
+
 ### デプロイ先のサーバーの準備
+
+Docker がインストールされているサーバーを準備してください。
 
 <Aside type="caution" title="注意！">
   注意：SSL が必須のプラットフォームにデプロイすると、Minecraft-Core
@@ -26,6 +30,20 @@ import {
   を無効にするか、Minecraft-Core 拡張機能を無効にする必要があります。
 </Aside>
 
+### イメージの取得
+
+Docker Hub からイメージが利用できます。
+
+### Docker Hub から取得する場合
+
+Docker Hub からイメージを取得してください。現時点では、latest(最新版)または preview(プレビュー版)のイメージが利用できます。
+PostgreSQL,
+Redis と接続する必要があります。
+
+<LinkCard
+  title="Docker Hub - TutoriaLLM"
+  link="https://hub.docker.com/repository/docker/soumame/tutoriallm/general"
+/>
 ### compose ファイルの作成
 
 import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
@@ -71,12 +89,6 @@ docker compose up -d
 <Aside type="note" title="ノート">
   TutoriaLLMでは、3000をアプリに、3001をVM実行のエントリーポイントのポートとして使用し、Traefikを使用してリバースプロキシを設定しています。
 </Aside>
-
-### Docker Hub から取得する
-
-[Docker
-Hub](https://hub.docker.com/r/soumame/code-tutorial-app)からイメージを取得することも可能です。PostgreSQL,
-Redis と接続する必要があります。
 
 ### 認証情報と初期チュートリアルのリセット
 
