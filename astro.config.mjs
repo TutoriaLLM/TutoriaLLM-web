@@ -15,11 +15,11 @@ export default defineConfig({
       components: {
         SiteTitle: "./src/components/SiteTitle.astro",
       },
-      // このサイトのデフォルト言語として英語を設定します。
-      defaultLocale: "ja",
+      // このサイトのデフォルト言語として日本語を設定します。
+      defaultLocale: "root",
       locales: {
-        // 日本語のドキュメントは`src/content/docs/ja`に置きます。
-        ja: {
+        // 日本語のドキュメントは`src/content/docs/`に置きます。
+        root: {
           label: "日本語",
           lang: "ja",
         },
