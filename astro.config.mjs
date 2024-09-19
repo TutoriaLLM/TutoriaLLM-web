@@ -5,16 +5,21 @@ import starlight from "@astrojs/starlight";
 export default defineConfig({
   integrations: [
     starlight({
-      title: "TutoriaLLM Docs",
+      title: "TutoriaLLM",
       customCss: [
         // カスタムCSSファイルへの相対パス
         "./src/customColour.css",
+        "./src/styles.css",
+        "./src/fonts/IBMPlexMono-ExtraLightItalic.css",
       ],
+      components: {
+        SiteTitle: "./src/components/SiteTitle.astro",
+      },
       // このサイトのデフォルト言語として英語を設定します。
-      defaultLocale: "root",
+      defaultLocale: "ja",
       locales: {
         // 日本語のドキュメントは`src/content/docs/`に置きます。
-        root: {
+        ja: {
           label: "日本語",
           lang: "ja",
         },
@@ -48,12 +53,12 @@ export default defineConfig({
           badge: "ページ作成中",
         },
         {
-          label: "エディターガイド",
+          label: "開発者ガイド",
           translations: {
-            en: "Editor Guide",
+            en: "Developer Guide",
           },
           autogenerate: {
-            directory: "editorguides",
+            directory: "developer",
             collapsed: true,
           },
         },

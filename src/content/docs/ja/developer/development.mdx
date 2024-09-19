@@ -42,7 +42,7 @@ GitHub リポジトリをクローンして、開発を行います。お好み�
 
 <Aside type="note" title="開発を行わない場合">
   開発を行わない場合は、[Docker
-  Hub](https://tutoriallm.com/editorguides/deployment/)からイメージを利用できます。PostgreSQL,
+  Hub](https://tutoriallm.com/developer/deployment/)から直接イメージを利用できます。PostgreSQL,
   Redis と接続する必要があります。
 </Aside>
 
@@ -50,11 +50,11 @@ GitHub リポジトリをクローンして、開発を行います。お好み�
 
 <Aside type="note" title="ノート">
   このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
-  の`docker-compose.yml`ファイルを参照しています。このファイルは、開発向けのファイルのため、[実稼働アプリをビルドする](/editorguides/deployment)
+  の`docker-compose.yml`ファイルを参照しています。このファイルは、開発向けのファイルのため、[実稼働アプリをビルドする](/developer/deployment)
   場合は`docker-compose.prod.yml`ファイルを利用することをお勧めします。
 </Aside>
 
-import composeExample from "../../media/code/docker-compose.yml?raw";
+import composeExample from "../../../media/code/docker-compose.yml?raw";
 
 以下は開発に利用できる`docker-compose.yml`ファイルの例です：
 
@@ -65,23 +65,9 @@ import composeExample from "../../media/code/docker-compose.yml?raw";
 `docker-compose.yml`ファイルと同じディレクトリに`.env`ファイルを作成してください。
 以下は 開発サーバーで必要な環境変数の例です：
 
-import envExample from "../../media/code/.env.dev.example?raw";
+import envExample from "../../../media/code/.env.dev.example?raw";
 
 <Code code={envExample} lang="txt" title="/env.dev.example" />
-
-- AUTH_SECRET - 認証設定で使用するシークレット
-- OPENAI_API_KEY - GPT を使用するためのキー
-
-- DB_USER - データベースのユーザー名
-- DB_PASSWORD - データベースのパスワード
-- DB_PORT - データベースのポート番号
-- DB_HOST - データベースのホスト名。
-- DB_NAME - データベースの名前。
-
-- REDIS_HOST - Redis のホスト名
-
-- DEFAULT_USER_NAME - デフォルトのユーザー名。
-- DEFAULT_USER_PASSWORD - デフォルトのユーザーパスワード。
 
 ### サーバーの起動
 

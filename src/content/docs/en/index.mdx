@@ -1,37 +1,47 @@
 ---
 title: Welcome to TutoriaLLM
-description: A self-hosted software that allows you to easily create and provide block programming tutorials like Scratch using AI.
+description: A self-hosted software that allows you to easily create and provide block programming tutorials, similar to Scratch, using AI.
 template: splash
 hero:
-  tagline: A self-hosted software that allows you to easily create and provide block programming tutorials like Scratch using AI.
+  tagline: A self-hosted software that allows you to easily create and provide block programming tutorials, similar to Scratch, using AI.
   image:
-    file: ../../../assets/houston.webp
+    file: ../../../assets/square.webp
   actions:
     - text: Try the Demo
       link: https://demo.tutoriaLLM.com
       icon: external
       variant: primary
     - text: Read the Documentation
-      link: /introduction
+      link: en/introduction
       icon: right-arrow
       variant: secondary
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Card, CardGrid, Aside } from "@astrojs/starlight/components";
+import Contributers from "../../../components/Contributers.astro";
+
+<Aside type="caution" title="Caution!">
+  The application is currently undergoing significant updates. Information about
+  the image available on Docker Hub is expected to be updated soon.
+</Aside>{" "}
 
 ## Let's get started
 
 <CardGrid stagger>
   <Card title="Deploy Your Own App" icon="github">
-    Start from the [GitHub repository](https://github.com/TutoriaLLM/TutoriaLLM)
-    or refer to the [Editor Guide](/en/editorguides/introduction).
+    Start from the [GitHub Repository](https://github.com/TutoriaLLM/TutoriaLLM)
+    or refer to the [Editor Guide](/en/developer/introduction).
   </Card>
-  <Card title="Experience the Demo" icon="external">
-    Try the [TutoriaLLM Demo](https://demo.tutoriaLLM.com) to explore some
+  <Card title="Try the Demo" icon="external">
+    Explore the [TutoriaLLM Demo](https://demo.tutoriaLLM.com) to try out some
     tutorials.
   </Card>
   <Card title="Learn How to Use the App" icon="open-book">
-    Learn more about [TutoriaLLM](/en/introduction) and how to use it through
-    the [User Guide](/en/userguides/introduction).
+    Learn about [TutoriaLLM](/en/introduction) or refer to the [User
+    Guide](/en/userguides/introduction) for instructions on how to use the app.
   </Card>
-</CardGrid>
+</CardGrid>{" "}
+
+## Contributers
+
+<Contributers />{" "}

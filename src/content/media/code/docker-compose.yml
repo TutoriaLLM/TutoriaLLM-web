@@ -1,14 +1,13 @@
-version: "3.8"
-
 services:
   redis:
+    #実稼働ではredis/redis-stack-serverを使用する
     container_name: code-tutorial-redis-dev
     image: redis/redis-stack:latest
     ports:
       - "6379:6379"
   db:
     container_name: code-tutorial-db-dev
-    image: postgres:14
+    image: pgvector/pgvector:pg14
     ports:
       - "5432:5432"
     environment:
@@ -37,13 +36,12 @@ services:
       - .env
     command: >
       sh -c "
-        if [ ! -f /.initialized ]; then
+        if [ ! -f /initialized/.initialized ]; then
           pnpm install &&
           pnpm run drizzle:generate &&
           pnpm run drizzle:push &&
           pnpm run reset-credential &&
-          pnpm run reset-tutorials &&
-          touch /.initialized &&
+          touch /initialized/.initialized &&
           pnpm run dev 
         else
           pnpm install &&
@@ -64,5 +62,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./app_data:/initialized # アプリの初期化を行うためのファイルをマウント
 volumes:
   db_data_db:

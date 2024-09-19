@@ -5,19 +5,20 @@ template: splash
 hero:
   tagline: Scratchのようなブロックプログラミングのチュートリアルを簡単に作成し、AIを利用して提供することができるセルフホスト型のソフトウェアです。
   image:
-    file: ../../assets/houston.webp
+    file: ../../../assets/square.webp
   actions:
     - text: デモで試す
       link: https://demo.tutoriaLLM.com
       icon: external
       variant: primary
     - text: ドキュメントを読む
-      link: /introduction
+      link: ja/introduction
       icon: right-arrow
       variant: secondary
 ---
 
 import { Card, CardGrid, Aside } from "@astrojs/starlight/components";
+import Contributers from "../../../components/Contributers.astro";
 
 <Aside type="caution" title="注意！">
   現在、アプリの大幅な更新を行なっています。Docker
@@ -28,7 +29,7 @@ import { Card, CardGrid, Aside } from "@astrojs/starlight/components";
 
 <CardGrid stagger>
   <Card title="自分のアプリをデプロイする" icon="github">
-    [GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM)から初めるか、[エディターガイド](/ja/editorguides/introduction)を参照してください。
+    [GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM)から初めるか、[エディターガイド](/ja/developer/introduction)を参照してください。
   </Card>
   <Card title="デモを体験する" icon="external">
     いくつかのチュートリアルを試せる[TutoriaLLMのデモ](https://demo.tutoriaLLM.com)に触れてみましょう。
@@ -37,3 +38,7 @@ import { Card, CardGrid, Aside } from "@astrojs/starlight/components";
     [TutoriaLLMについて](/ja/introduction)や、[ユーザーガイド](/ja/userguides/introduction)からアプリの使い方について学びましょう。
   </Card>
 </CardGrid>
+
+## Contributers
+
+<Contributers />
