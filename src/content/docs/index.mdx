@@ -17,7 +17,7 @@ hero:
       variant: secondary
 ---
 
-import { Card, CardGrid, Aside } from "@astrojs/starlight/components";
+import { Card, CardGrid, Aside, LinkCard } from "@astrojs/starlight/components";
 import Contributers from "../../components/Contributers.astro";
 
 <Aside type="caution" title="注意！">
@@ -25,7 +25,7 @@ import Contributers from "../../components/Contributers.astro";
   Hubで利用可能なイメージに関する情報は、近日中に更新される予定です。
 </Aside>
 
-## Lets get started
+## さて、何から始めますか？
 
 <CardGrid stagger>
   <Card title="自分のアプリをデプロイする" icon="github">
@@ -39,6 +39,14 @@ import Contributers from "../../components/Contributers.astro";
   </Card>
 </CardGrid>
 
-## Contributers
+## メンバーとコントリビューター
+
+プロジェクトは So Tokumaru によって開発されていますが、多くのコントリビューターによって支えられています。
+
+<LinkCard
+  title="TutoriaLLMの開発に貢献する"
+  description="GitHub リポジトリを覗いてみましょう。"
+  href="https://github.com/TutoriaLLM/TutoriaLLM"
+/>
 
 <Contributers />
