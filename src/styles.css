@@ -36,3 +36,55 @@
   aspect-ratio: 16 / 9;
   border-radius: 8px;
 }
+
+.status-box {
+  padding: 20px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 通常の状態 */
+.site-status {
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* ステータスが正常な場合のスタイル */
+.status-ok {
+  background: rgb(34, 197, 94);
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 1) 0%,
+    rgba(132, 204, 22, 1) 80%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+/* ステータスがエラーの場合のスタイル */
+.status-error {
+  background: rgb(220, 38, 38);
+  background: linear-gradient(
+    90deg,
+    rgba(220, 38, 38, 1) 0%,
+    rgba(225, 29, 72, 1) 29%,
+    rgba(219, 39, 119, 1) 100%
+  );
+}
+
+/* ステータスが不明の場合のスタイル */
+.status-unknown {
+  background: rgb(249, 115, 22);
+  background: linear-gradient(
+    90deg,
+    rgba(249, 115, 22, 1) 0%,
+    rgba(217, 119, 6, 1) 29%,
+    rgba(251, 191, 36, 1) 100%
+  );
+}
