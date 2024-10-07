@@ -50,7 +50,6 @@ export default defineConfig({
           autogenerate: {
             directory: "userguides",
           },
-          badge: "ページ作成中",
         },
         {
           label: "開発者ガイド",

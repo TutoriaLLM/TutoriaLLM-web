@@ -1,0 +1,26 @@
+<script>
+    // Check demo site status on load and return a message
+    const siteStatus = document.querySelector('.site-status');
+    fetch('https://demo.tutoriallm.com/api/ping', {
+        method: 'GET',
+        mode: 'cors', // Add this line
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.message === 'Site not found' && siteStatus) {
+                siteStatus.innerHTML = 'This is a demo site. It may not be available at all times.';
+            }
+        })
+        .catch(error => {
+            if (siteStatus) {
+                siteStatus.innerHTML = 'Failed to fetch site status. Please try again later.';
+            }
+        });
+</script>
+
+<div class="site-status"></div>

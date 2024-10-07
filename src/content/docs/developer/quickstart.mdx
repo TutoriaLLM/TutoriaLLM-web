@@ -1,0 +1,93 @@
+---
+title: クイックスタート
+description: Docker compose を使用して、TutoriaLLM アプリをサーバーにホストしてみましょう。
+sidebar:
+  order: 1
+---
+
+import {
+  LinkCard,
+  Card,
+  CardGrid,
+  Aside,
+  Icon,
+  Code,
+} from "@astrojs/starlight/components";
+
+## Docker の利用
+
+TutoriaLLM では、Docker compose を使用して、アプリを開発したり、ホストしたりすることができます。
+TutoriaLLM の基本的な部分は Docker イメージとして提供されており、Docker compose などを使用してデータベースと接続した上で、サーバーにデプロイすることができます。以下の手順に従ってアプリをサーバーにデプロイしてください。
+
+<Aside type="note" title="Dockerについて">
+  Dockerについての情報は、[Docker](https://www.docker.com/)の公式サイトを参照してください。
+</Aside>
+
+## デプロイ先のサーバーの準備
+
+Docker がインストールされているサーバーや、パソコンを準備してください。
+
+<Aside type="caution" title="注意！">
+  注意：SSL が必須のプラットフォームにデプロイすると、Minecraft関連の
+  機能が正常に動作しない可能性があります。MinecrtaftはSSL(HTTPS)
+  に対応していないため、現時点においてこの問題を解決するためには、SSL
+  を無効にするか、Minecraft-Core 拡張機能を無効にする必要があります。
+</Aside>
+
+## イメージの取得
+
+イメージは、Docker Hub にて利用可能です。さまざまなバージョンが提供されていますが、Latest（最新版）の利用をお勧めします。
+イメージを利用するには、PostgreSQL,Redis と接続する必要があります。
+
+<LinkCard
+  title="Docker Hub - TutoriaLLM"
+  link="https://hub.docker.com/repository/docker/soumame/tutoriallm/general"
+/>
+
+### compose ファイルの作成
+
+import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
+
+以下は実稼働で利用できる`docker-compose.yml`ファイルの例です：
+
+<Aside type="note" title="ノート">
+  このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
+  の`docker-compose.prod.yml`ファイルを参照しています。このファイルは、リバースプロキシを利用してセキュアな接続を確保したアプリを稼働させるために必要な環境変数を設定しています。また、Watchtowerを使用して、アプリの自動更新を行う設定も含まれています。
+</Aside>
+
+<Code code={composeProdExample} lang="yaml" title="./docker-compose.yml" />
+
+### 環境変数の設定
+
+サーバーでホストして稼働させる場合は以下のコマンドで実稼働アプリをビルドし、起動させます。アプリを稼働させるには以下の環境変数が必要です：
+
+- AUTH_SECRET - 認証設定で使用するシークレット
+- OPENAI_API_KEY - GPT を使用するためのキー
+
+- DB_USER - データベースのユーザー名
+- DB_PASSWORD - データベースのパスワード
+- DB_PORT - データベースのポート番号
+- DB_HOST - データベースのホスト名。
+- DB_NAME - データベースの名前。
+
+- REDIS_HOST - Redis のホスト名
+
+- DEFAULT_USER_NAME - デフォルトのユーザー名。
+- DEFAULT_USER_PASSWORD - デフォルトのユーザーパスワード。
+
+- SENTRY_DSN - 任意で Sentry.io の DSN を設定します。バックエンドのエラーを追跡するために使用します。
+
+- DOMAIN - アプリのドメイン名。自動 SSL 設定に利用します
+- EMAIL - アプリのメールアドレス。自動 SSL 設定に利用します
+
+### アプリの起動
+
+Compose ファイルと.env ファイルがあるディレクトリ内で、ターミナルで以下のコマンドを実行してアプリを起動します。
+
+```sh
+docker compose up
+
+## バックグラウンドで起動する場合
+docker compose up -d
+
+```
