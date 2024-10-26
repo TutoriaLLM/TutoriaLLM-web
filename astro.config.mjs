@@ -43,16 +43,7 @@ export default defineConfig({
           },
         },
         {
-          label: "ユーザーガイド",
-          translations: {
-            en: "User Guide",
-          },
-          autogenerate: {
-            directory: "userguides",
-          },
-        },
-        {
-          label: "開発者ガイド",
+          label: "開発者向け",
           translations: {
             en: "Developer Guide",
           },
@@ -62,12 +53,12 @@ export default defineConfig({
           },
         },
         {
-          label: "ユーザーテスト",
+          label: "リファレンス",
           translations: {
-            en: "User Testing",
+            en: "Reference",
           },
           autogenerate: {
-            directory: "user-test",
+            directory: "reference",
           },
         },
       ],
