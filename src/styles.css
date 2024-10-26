@@ -8,12 +8,7 @@
 }
 
 [data-has-hero] .page {
-  background: 
-    /* 粒子のテクスチャをリピート */ linear-gradient(
-      215deg,
-      var(--overlay-blurple),
-      transparent 40%
-    ),
+  background: linear-gradient(215deg, var(--overlay-blurple), transparent 40%),
     radial-gradient(var(--overlay-blurple), transparent 40%) no-repeat -60vw -40vh /
       105vw 200vh,
     radial-gradient(var(--overlay-blurple), transparent 65%) no-repeat 50%
@@ -58,24 +53,12 @@
 
 /* ステータスが正常な場合のスタイル */
 .status-ok {
-  background: rgb(34, 197, 94);
-  background: linear-gradient(
-    90deg,
-    rgba(34, 197, 94, 1) 0%,
-    rgba(132, 204, 22, 1) 80%,
-    rgba(0, 212, 255, 1) 100%
-  );
+  background: #15803d;
 }
 
 /* ステータスがエラーの場合のスタイル */
 .status-error {
-  background: rgb(220, 38, 38);
-  background: linear-gradient(
-    90deg,
-    rgba(220, 38, 38, 1) 0%,
-    rgba(225, 29, 72, 1) 29%,
-    rgba(219, 39, 119, 1) 100%
-  );
+  background: #dc2626;
 }
 
 /* ステータスが不明の場合のスタイル */
