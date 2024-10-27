@@ -1,0 +1,1137 @@
+openapi: 3.0.0
+info:
+  title: TutoriaLLM API
+  description: API for TutoriaLLM server
+  version: 1.0.0
+  license:
+    name: Licensed Under MIT
+  contact:
+    name: TutoriaLLM
+    url: https://tutoriallm.com
+paths:
+  /admin/config/update:
+    post:
+      description: Updates or creates the app configuration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppConfig"
+      responses:
+        "200":
+          description: Config updated
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Config updated
+  /admin/config/:
+    get:
+      description: Returns the app configuration
+      responses:
+        "200":
+          description: The app configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppConfig"
+  /admin/sessions/list:
+    get:
+      description: Returns a list of all sessions
+      responses:
+        "200":
+          description: A list of all sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+  /admin/sessions/{code}:
+    delete:
+      description: Deletes a session by code
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+  /admin/training/data/random:
+    get:
+      description: Returns a random training data
+      responses:
+        "200":
+          description: A random training data
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: No data found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No data found
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to fetch data
+  /admin/training/data/list:
+    get:
+      description: Returns a list of all training data
+      responses:
+        "200":
+          description: A list of all training data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "404":
+          description: No data found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No data found
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to fetch data
+  /admin/training/data/{id}:
+    delete:
+      description: Deletes a training data by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Training data deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: data {id} deleted
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to delete data
+  /admin/training/guide/new:
+    post:
+      description: API to create a new guide from training data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrainingData"
+      responses:
+        "201":
+          description: Guide created
+        "400":
+          description: Body is required
+        "500":
+          description: Failed to create guide
+  /admin/training/guide/search:
+    post:
+      description: API to search knowledge based on vector
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+      responses:
+        "200":
+          description: A list of guides
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Guide"
+        "400":
+          description: Body is required
+        "500":
+          description: Failed to search guides
+  /admin/training/guide/list:
+    get:
+      description: API to get a list of guides
+      responses:
+        "200":
+          description: A list of guides
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Guide"
+        "404":
+          description: No guides found
+        "500":
+          description: Failed to fetch guides
+  /admin/training/guide/{id}:
+    get:
+      description: API to get a guide content by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A guide
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Guide"
+        "500":
+          description: Failed to fetch guide
+    put:
+      description: API to update or create a guide by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrainingData"
+      responses:
+        "201":
+          description: Guide updated
+        "400":
+          description: Body is required
+        "500":
+          description: Failed to update guide
+    delete:
+      description: API to delete a guide by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Guide deleted
+        "500":
+          description: Failed to delete guide
+  /admin/tutorials/:
+    get:
+      description: Returns all tutorials
+      responses:
+        "200":
+          description: A list of all tutorials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tutorial"
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to fetch tutorials
+  /admin/tutorials/{id}:
+    get:
+      description: Returns the content of a tutorial
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The content of the tutorial
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tutorial"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to fetch tutorial
+    delete:
+      description: Deletes a tutorial by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tutorial deleted
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tutorial {id} deleted
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to delete tutorial
+    put:
+      description: Updates the content of a tutorial
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tutorial"
+      responses:
+        "200":
+          description: Tutorial updated
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tutorial {id} updated
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Bad Request
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to update tutorial
+  /admin/tutorials/new:
+    post:
+      description: Creates a new tutorial
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tutorial"
+      responses:
+        "201":
+          description: Tutorial created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Tutorial created
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Body is required
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to create tutorial
+  /admin/tutorials/generate-content:
+    post:
+      description: Generates content for a tutorial using AI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tutorial"
+      responses:
+        "200":
+          description: Generated content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tutorial"
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to generate content
+  /admin/tutorials/generate-metadata:
+    post:
+      description: Generates metadata for a tutorial using AI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tutorial"
+      responses:
+        "200":
+          description: Generated metadata
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tutorial"
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to generate metadata
+  /admin/users/:
+    get:
+      description: Returns a list of all users
+      responses:
+        "200":
+          description: A list of all users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+  /admin/users/new:
+    post:
+      description: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+  /admin/users/{id}:
+    get:
+      description: Returns the information of a user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The information of the user
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: ID is required
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: User not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+    put:
+      description: Updates the information of a user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: User updated successfully
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Bad Request
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: User not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+    delete:
+      description: Deletes a user by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: User and associated sessions deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: User and associated sessions deleted successfully
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: User not found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  error: Error message
+  /api/hello:
+    get:
+      description: Returns a hello world message
+      responses:
+        "200":
+          description: A hello world message
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Hello, world!
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not Found
+  /auth/session:
+    get:
+      description: Returns the current session
+      responses:
+        "200":
+          description: The current session
+          content:
+            application/json:
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 認証情報がありません
+  /auth/login:
+    post:
+      description: Logs in a user and creates a session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Redirects to the home page
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: ユーザーが見つかりません
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 内部サーバーエラー
+  /auth/logout:
+    post:
+      description: Logs out a user and invalidates the session
+      responses:
+        "200":
+          description: Successfully logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: ログアウトしました
+        "401":
+          description: Unauthorized
+  /session/new:
+    post:
+      description: Creates a new session with optional session data.
+      parameters:
+        - name: language
+          in: query
+          description: Language code to initialize the session.
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionValue"
+      responses:
+        "200":
+          description: Successfully created a new session.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Generated session code
+        "500":
+          description: Failed to create session by API.
+  /session/{key}:
+    get:
+      description: Retrieves the session data for the given key.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieved session data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionValue"
+        "404":
+          description: Session not found.
+    put:
+      description: Updates the session data for the given key.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SessionValue"
+      responses:
+        "200":
+          description: Successfully updated session data.
+        "404":
+          description: Session not found.
+    delete:
+      description: Deletes the session data for the given key.
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully deleted session data.
+        "404":
+          description: Session not found.
+  /config:
+    get:
+      description: Returns the app configuration
+      responses:
+        "200":
+          description: The app configuration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppConfig"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Config not found
+  /status:
+    get:
+      description: Returns OK for health check
+      responses:
+        "200":
+          description: Health check successful
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
+  /status/redis:
+    get:
+      description: Returns Redis statistics
+      responses:
+        "200":
+          description: Redis statistics
+          content:
+            application/json:
+              schema:
+                type: object
+  /session/socket/get/{code}:
+    get:
+      description: Returns a uuid of the session
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A uuid of the session
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    example: 12345678-1234-1234-1234-123456789012
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Session not found
+        "500":
+          description: Server error
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Server error
+  /session/socket/hello:
+    get:
+      description: Returns a hello message
+      responses:
+        "200":
+          description: A hello message
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: hello
+  /tutorial:
+    get:
+      description: Returns a list of tutorials without content
+      responses:
+        "200":
+          description: A list of tutorials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    metadata:
+                      type: object
+                    language:
+                      type: string
+                    tags:
+                      type: array
+                      items:
+                        type: string
+        "500":
+          description: Failed to fetch tutorials
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to fetch tutorials
+  /tutorial/{id}:
+    get:
+      description: Returns the content of a tutorial
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The content of the tutorial
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Not Found
+        "500":
+          description: Failed to fetch tutorial
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Failed to fetch tutorial
+  /tutorial/tags:
+    get:
+      description: Returns all tags used in tutorials
+      responses:
+        "200":
+          description: A list of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "500":
+          description: Failed to fetch tags
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Failed to fetch tags
+components:
+  schemas:
+    TrainingData:
+      type: object
+      properties:
+        id:
+          type: integer
+        metadata:
+          type: object
+        question:
+          type: string
+        answer:
+          type: string
+    Guide:
+      type: object
+      properties:
+        id:
+          type: integer
+        metadata:
+          type: object
+        question:
+          type: string
+        answer:
+          type: string
+        embedding:
+          type: array
+          items:
+            type: number
+    Tutorial:
+      type: object
+      properties:
+        language:
+          type: string
+        id:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        content:
+          type: string
+        metadata:
+          type: object
+          properties:
+            selectCount:
+              type: integer
+            otherMetadataField:
+              type: string
+        serializednodes:
+          type: string
+    SessionValue:
+      type: object
+      properties:
+        sessioncode:
+          type: string
+        uuid:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        dialogue:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              contentType:
+                type: string
+              isuser:
+                type: boolean
+              content:
+                type: string
+        quickReplies:
+          type: array
+          items:
+            type: string
+        isReplying:
+          type: boolean
+        easyMode:
+          type: boolean
+        responseMode:
+          type: string
+        workspace:
+          type: object
+        isVMRunning:
+          type: boolean
+        clients:
+          type: array
+          items:
+            type: string
+        language:
+          type: string
+        llmContext:
+          type: string
+        tutorial:
+          type: object
+          properties:
+            isTutorial:
+              type: boolean
+            tutorialId:
+              type: string
+              nullable: true
+            progress:
+              type: integer
+        stats:
+          type: object
+          properties:
+            totalConnectingTime:
+              type: integer
+            currentNumOfBlocks:
+              type: integer
+            totalInvokedLLM:
+              type: integer
+            totalUserMessages:
+              type: integer
+            totalCodeExecutions:
+              type: integer
+        audios:
+          type: array
+          items:
+            type: string
+        userAudio:
+          type: string
+        screenshot:
+          type: string
+        clicks:
+          type: array
+          items:
+            type: string
+    AppConfig:
+      type: object
+      properties:
+        General_Settings:
+          type: object
+          properties:
+            Enable_Join_by_code:
+              type: boolean
+            Enable_Create_Room:
+              type: boolean
+            Enable_Memory_Use_Log:
+              type: boolean
+        AI_Settings:
+          type: object
+          properties:
+            Chat_AI_Model:
+              type: string
+            Chat_Audio:
+              type: boolean
+            Chat_AI_Temperature:
+              type: number
+        Client_Settings:
+          type: object
+          properties:
+            AutoReply:
+              type: boolean
+            Reply_Time_ms:
+              type: number
+            Screenshot_Interval_min:
+              type: number
+            GA_Tracking_ID:
+              type: string
+        Code_Execution_Limits:
+          type: object
+          properties:
+            Max_CodeRangeSizeMb:
+              type: number
+            Max_OldGenerationSizeMb:
+              type: number
+            Max_YoungGenerationSizeMb:
+              type: number
+            Max_Num_Message_Queue:
+              type: number
+        Client_Sentry_Settings:
+          type: object
+          properties:
+            Sentry_DSN:
+              type: string
+            replaysOnErrorSampleRate:
+              type: number
+            replaysSessionSampleRate:
+              type: number
+            tracesSampleRate:
+              type: number
+tags: []

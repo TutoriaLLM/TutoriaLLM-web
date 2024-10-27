@@ -1,0 +1,20 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/Sidebar.astro';
+
+const isEnglishPage = Astro.url.pathname.startsWith('/en/');
+
+Astro.props.sidebar = Astro.props.sidebar
+  .filter((entry) => {
+    if (isEnglishPage && entry.type === 'group' && entry.label === 'API(ja)') {
+      return false;
+    }if (!isEnglishPage && entry.type === 'group' && entry.label === 'API(en)') {
+      return false;
+    }
+
+    return true;
+  });
+  
+---
+
+<Default {...Astro.props}><slot /></Default>

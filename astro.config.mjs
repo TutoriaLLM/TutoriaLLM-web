@@ -1,10 +1,27 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import starlightOpenAPI, { openAPISidebarGroups } from "starlight-openapi";
+import starlightLinksValidator from "starlight-links-validator";
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     starlight({
+      plugins: [
+        starlightLinksValidator(), // Generate the OpenAPI documentation pages.
+        starlightOpenAPI([
+          {
+            base: "api",
+            label: "API(ja)",
+            schema: "./schema/api-schema.yaml",
+          },
+          // {
+          //   base: "/en/api",
+          //   label: "API(en)",
+          //   schema: "./schema/api-schema.yaml",
+          // },
+        ]),
+      ],
       title: "TutoriaLLM",
       customCss: [
         // カスタムCSSファイルへの相対パス
@@ -14,6 +31,7 @@ export default defineConfig({
       ],
       components: {
         SiteTitle: "./src/components/SiteTitle.astro",
+        Sidebar: "./src/components/Sidebar.astro",
       },
       // このサイトのデフォルト言語として日本語を設定します。
       defaultLocale: "root",
@@ -61,6 +79,7 @@ export default defineConfig({
             directory: "reference",
           },
         },
+        ...openAPISidebarGroups,
       ],
     }),
   ],

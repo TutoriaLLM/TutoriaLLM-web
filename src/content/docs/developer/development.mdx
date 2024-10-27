@@ -2,7 +2,7 @@
 title: Dockerを利用して開発する
 description: Docker compose を使用して、TutoriaLLM アプリを開発する方法を説明します。
 sidebar:
-  order: 3
+  order: 2
 ---
 
 import {
@@ -14,13 +14,10 @@ import {
   Code,
 } from "@astrojs/starlight/components";
 
-<Aside type="note" title="ノート">
-  この記事の情報は今後更新予定です。
-</Aside>
-
 ## Docker を利用した開発
 
-TutoriaLLM では、Docker compose を使用して、アプリを開発することができます。以下の手順からアプリを開発してみましょう。
+TutoriaLLM では、Docker を使用して、アプリを開発したり、ホストしたりすることができます。
+TutoriaLLM の基本的な部分は Docker イメージとして提供されており、Docker compose などを使用してデータベースと接続した上で、サーバーにデプロイすることができます。以下の手順に従ってアプリをサーバーにデプロイしてください。
 
 <Aside type="note" title="Dockerについて">
   Dockerについての情報は、[Docker](https://www.docker.com/)の公式サイトを参照してください。
@@ -46,16 +43,17 @@ GitHub リポジトリをクローンして、開発を行います。お好み�
 
 <Aside type="note" title="開発を行わない場合">
   開発を行わない場合は、[Docker
-  Hub](https://tutoriallm.com/developer/deployment/)から直接イメージを利用できます。PostgreSQL,
-  Redis と接続する必要があります。
+  Hub](https://tutoriallm.com/developer/host/)から直接イメージを利用できます。Pgvector(または
+  Vector が利用できる PostgreSQL), Redis と接続する必要があります。
 </Aside>
 
 ### compose ファイルの作成
 
 <Aside type="note" title="ノート">
   このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
-  の`docker-compose.yml`ファイルを参照しています。このファイルは、開発向けのファイルのため、[実稼働アプリをビルドする](/developer/deployment)
-  場合は`docker-compose.prod.yml`ファイルを利用することをお勧めします。
+  の`docker-compose.yml`ファイルを参照しています。このファイルは、開発者向けのもので、SSLなどの設定を省き、テレメトリなどの機能をサポートしています。
+  [実稼働アプリをビルドする](/developer/host)
+  場合はSSLなどを利用するため、`docker-compose.prod.yml`ファイルを利用することをお勧めします。
 </Aside>
 
 import composeExample from "../../media/code/docker-compose.yml?raw";
@@ -64,14 +62,26 @@ import composeExample from "../../media/code/docker-compose.yml?raw";
 
 <Code code={composeExample} lang="yaml" title="/docker-compose.yml" />
 
-### .env ファイルの作成
+### 環境変数の設定
 
-`docker-compose.yml`ファイルと同じディレクトリに`.env`ファイルを作成してください。
-以下は 開発サーバーで必要な環境変数の例です：
+以下は環境変数の例です。デプロイ方法に合わせて調整してください。：
 
-import envExample from "../../media/code/.env.dev.example?raw";
+- AUTH_SECRET - 認証設定で使用するシークレット
+- OPENAI_API_KEY - OpenAI API を使用するためのキー
+- OPENAI_API_ENDPOINT - OpenAI API のエンドポイント。設定しない場合はデフォルトのエンドポイントを使用します。
 
-<Code code={envExample} lang="txt" title="/env.dev.example" />
+- DB_USER - データベースのユーザー名
+- DB_PASSWORD - データベースのパスワード
+- DB_PORT - データベースのポート番号(例: 5432)
+- DB_HOST - データベースのホスト名。(例: 'db')
+- DB_NAME - データベースの名前。
+
+- REDIS_HOST - Redis のホスト名
+
+- DEFAULT_USER_NAME - デフォルトのユーザー名。
+- DEFAULT_USER_PASSWORD - デフォルトのユーザーパスワード。
+
+- TELEMETRY_EXPORT_URL - テレメトリデータをエクスポートするための URL。OpenTelemetry などを使用する場合に設定します。
 
 ### サーバーの起動
 

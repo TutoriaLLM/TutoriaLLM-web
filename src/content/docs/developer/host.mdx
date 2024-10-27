@@ -16,7 +16,7 @@ import {
 
 ## Docker の利用
 
-TutoriaLLM では、Docker compose を使用して、アプリを開発したり、ホストしたりすることができます。
+TutoriaLLM では、Docker を使用して、アプリを開発したり、ホストしたりすることができます。
 TutoriaLLM の基本的な部分は Docker イメージとして提供されており、Docker compose などを使用してデータベースと接続した上で、サーバーにデプロイすることができます。以下の手順に従ってアプリをサーバーにデプロイしてください。
 
 <Aside type="note" title="Dockerについて">
@@ -37,12 +37,21 @@ Docker がインストールされているサーバーや、パソコンを準�
 ## イメージの取得
 
 イメージは、Docker Hub にて利用可能です。さまざまなバージョンが提供されていますが、Latest（最新版）の利用をお勧めします。
-イメージを利用するには、PostgreSQL,Redis と接続する必要があります。
+イメージを利用するには、Pgvector(または Vector が利用できる PostgreSQL),Redis と接続する必要があります。
 
 <LinkCard
   title="Docker Hub - TutoriaLLM"
   link="https://hub.docker.com/repository/docker/soumame/tutoriallm/general"
 />
+
+### バージョンについて
+
+TutoriaLLM では、安定性を確保するため、複数のバージョンを提供しています。バージョンの変更内容などについては、[GitHub リポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)をご覧ください：
+
+- `latest` - 最新のリリース
+  - `release_[YYYY-DDMM-BUILD_NUMBER]` - バージョン別のリリース
+- `latest-preview` - 開発中の最新のリリース
+  - `preview_[YYYY-DDMM-BUILD_NUMBER]` - 開発中のバージョン
 
 ### compose ファイルの作成
 
@@ -59,15 +68,16 @@ import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 
 ### 環境変数の設定
 
-サーバーでホストして稼働させる場合は以下のコマンドで実稼働アプリをビルドし、起動させます。アプリを稼働させるには以下の環境変数が必要です：
+以下は環境変数の例です。デプロイ方法に合わせて調整してください。：
 
 - AUTH_SECRET - 認証設定で使用するシークレット
-- OPENAI_API_KEY - GPT を使用するためのキー
+- OPENAI_API_KEY - OpenAI API を使用するためのキー
+- OPENAI_API_ENDPOINT - OpenAI API のエンドポイント。設定しない場合はデフォルトのエンドポイントを使用します。
 
 - DB_USER - データベースのユーザー名
 - DB_PASSWORD - データベースのパスワード
-- DB_PORT - データベースのポート番号
-- DB_HOST - データベースのホスト名。
+- DB_PORT - データベースのポート番号(例: 5432)
+- DB_HOST - データベースのホスト名。(例: 'db')
 - DB_NAME - データベースの名前。
 
 - REDIS_HOST - Redis のホスト名
@@ -79,6 +89,14 @@ import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 
 - DOMAIN - アプリのドメイン名。自動 SSL 設定に利用します
 - EMAIL - アプリのメールアドレス。自動 SSL 設定に利用します
+
+<Aside type="caution" title="注意！">
+  注意：TutoriaLLMでは、OpenAIのキーから複数のサービスを利用しています。Tier
+  によっては、利用制限が発生し、アプリが正常に動作しない可能性があります。
+  詳しくは [OpenAI - Rate
+  Limits](https://platform.openai.com/docs/guides/rate-limits/usage-tiers)
+  を参照してください。
+</Aside>
 
 ### アプリの起動
 

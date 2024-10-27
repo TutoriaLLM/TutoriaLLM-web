@@ -1,0 +1,124 @@
+---
+title: Developing with Docker
+description: Explains how to develop the TutoriaLLM app using Docker compose.
+sidebar:
+  order: 2
+---
+
+import {
+  LinkCard,
+  Card,
+  CardGrid,
+  Aside,
+  Icon,
+  Code,
+} from "@astrojs/starlight/components";
+
+## Developing with Docker
+
+TutoriaLLM allows you to develop and host the app using Docker. The core parts of TutoriaLLM are provided as Docker images, and you can deploy the app to a server by connecting it to a database using Docker compose. Follow the steps below to deploy the app to a server.
+
+<Aside type="note" title="About Docker">
+  For information about Docker, please refer to the official
+  [Docker](https://www.docker.com/) website.
+</Aside>
+
+### Cloning the Repository
+
+Clone the GitHub repository to start development. You can edit the code using your preferred editor and use Docker to run the app in a local environment.
+
+<LinkCard
+  title="GitHub Repository"
+  description="Check out the GitHub repository for TutoriaLLM."
+  href="https://github.com/TutoriaLLM/TutoriaLLM"
+/>
+
+Additionally, Docker is required to run the app. If Docker is not installed, please install it from the following link.
+
+<LinkCard
+  title="Install Docker"
+  description="Check out how to install Docker."
+  href="https://docs.docker.com/get-docker/"
+/>
+
+<Aside type="note" title="If not developing">
+  If you are not developing, you can use the image directly from [Docker
+  Hub](https://tutoriallm.com/developer/host/). You will need to connect to
+  Pgvector (or PostgreSQL with Vector support) and Redis.
+</Aside>
+
+### Creating the Compose File
+
+<Aside type="note" title="Note">
+  This file refers to the `docker-compose.yml` file in the [GitHub
+  repository](https://github.com/TutoriaLLM/TutoriaLLM/). This file is for
+  developers and omits settings like SSL, but supports features like telemetry.
+  If you are [building a production app](/developer/host), it is recommended to
+  use the `docker-compose.prod.yml` file for SSL and other settings.
+</Aside>
+
+import composeExample from "../../../media/code/docker-compose.yml?raw";
+
+Below is an example of a `docker-compose.yml` file that can be used for development:
+
+<Code code={composeExample} lang="yaml" title="/docker-compose.yml" />
+
+### Setting Environment Variables
+
+Below are examples of environment variables. Adjust them according to your deployment method:
+
+- AUTH_SECRET - Secret used for authentication settings
+- OPENAI_API_KEY - Key for using the OpenAI API
+- OPENAI_API_ENDPOINT - Endpoint for the OpenAI API. If not set, the default endpoint will be used.
+
+- DB_USER - Database username
+- DB_PASSWORD - Database password
+- DB_PORT - Database port number (e.g., 5432)
+- DB_HOST - Database hostname (e.g., 'db')
+- DB_NAME - Database name
+
+- REDIS_HOST - Redis hostname
+
+- DEFAULT_USER_NAME - Default username
+- DEFAULT_USER_PASSWORD - Default user password
+
+- TELEMETRY_EXPORT_URL - URL for exporting telemetry data. Set this if using something like OpenTelemetry.
+
+### Starting the Server
+
+You can host the server using Docker. Start the development server with the following command:
+
+```sh
+
+docker compose up
+
+# To build
+
+docker compose up --build
+
+# To start in the background
+
+docker compose up -d
+
+```
+
+<Aside type="note" title="Note">
+  TutoriaLLM uses port 3000 for the app and port 3001 as the entry point for VM
+  execution.
+</Aside>
+
+### Using HMR
+
+If you want to use HMR (Hot Module Replacement), start with the following command. The files will automatically reload when changed.
+
+<Aside type="note" title="What is HMR?">
+  HMR is a feature that automatically reloads files when they are changed. In
+  TutoriaLLM, you can use `docker compose watch` to change files without
+  restarting Docker.
+</Aside>
+
+```sh
+
+docker compose watch
+
+```

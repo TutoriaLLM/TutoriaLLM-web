@@ -1,0 +1,111 @@
+---
+title: Hosting TutoriaLLM
+description: Let's host the TutoriaLLM app on a server using Docker compose.
+sidebar:
+  order: 1
+---
+
+import {
+  LinkCard,
+  Card,
+  CardGrid,
+  Aside,
+  Icon,
+  Code,
+} from "@astrojs/starlight/components";
+
+## Using Docker
+
+TutoriaLLM allows you to develop and host the app using Docker. The core parts of TutoriaLLM are provided as Docker images, and you can deploy the app to a server by connecting it to a database using Docker compose. Follow the steps below to deploy the app to a server.
+
+<Aside type="note" title="About Docker">
+  For information about Docker, please refer to the official
+  [Docker](https://www.docker.com/) website.
+</Aside>
+
+## Preparing the Deployment Server
+
+Prepare a server or computer with Docker installed.
+
+<Aside type="caution" title="Caution!">
+  Caution: If you deploy to a platform that requires SSL, Minecraft-related
+  features may not work properly. Minecraft does not support SSL (HTTPS), so to
+  resolve this issue, you need to either disable SSL or disable the
+  Minecraft-Core extension.
+</Aside>
+
+## Obtaining the Image
+
+The image is available on Docker Hub. Various versions are provided, but it is recommended to use the latest version. To use the image, you need to connect to Pgvector (or PostgreSQL with Vector support) and Redis.
+
+<LinkCard
+  title="Docker Hub - TutoriaLLM"
+  link="https://hub.docker.com/repository/docker/soumame/tutoriallm/general"
+/>
+
+### About Versions
+
+TutoriaLLM provides multiple versions to ensure stability. For details on version changes, please refer to the [GitHub repository](https://github.com/TutoriaLLM/TutoriaLLM/):
+
+- `latest` - Latest release
+  - `release_[YYYY-DDMM-BUILD_NUMBER]` - Version-specific releases
+- `latest-preview` - Latest development release
+  - `preview_[YYYY-DDMM-BUILD_NUMBER]` - Development versions
+
+### Creating the Compose File
+
+import composeProdExample from "../../../media/code/docker-compose.prod.yml?raw";
+
+Below is an example of a `docker-compose.yml` file that can be used for production:
+
+<Aside type="note" title="Note">
+  This file refers to the `docker-compose.prod.yml` file in the [GitHub
+  repository](https://github.com/TutoriaLLM/TutoriaLLM/). This file sets the
+  necessary environment variables to run a secure app using a reverse proxy. It
+  also includes settings for automatic updates using Watchtower.
+</Aside>
+
+<Code code={composeProdExample} lang="yaml" title="./docker-compose.yml" />
+
+### Setting Environment Variables
+
+Below are examples of environment variables. Adjust them according to your deployment method:
+
+- AUTH_SECRET - Secret used for authentication settings
+- OPENAI_API_KEY - Key for using the OpenAI API
+- OPENAI_API_ENDPOINT - Endpoint for the OpenAI API. If not set, the default endpoint will be used.
+
+- DB_USER - Database username
+- DB_PASSWORD - Database password
+- DB_PORT - Database port number (e.g., 5432)
+- DB_HOST - Database hostname (e.g., 'db')
+- DB_NAME - Database name
+
+- REDIS_HOST - Redis hostname
+
+- DEFAULT_USER_NAME - Default username
+- DEFAULT_USER_PASSWORD - Default user password
+
+- SENTRY_DSN - Optional DSN for Sentry.io. Used to track backend errors.
+
+- DOMAIN - App domain name. Used for automatic SSL settings
+- EMAIL - App email address. Used for automatic SSL settings
+
+<Aside type="caution" title="Caution!">
+  Caution: TutoriaLLM uses multiple services from OpenAI keys. Depending on the
+  tier, usage limits may occur, and the app may not function properly. For more
+  details, refer to [OpenAI - Rate
+  Limits](https://platform.openai.com/docs/guides/rate-limits/usage-tiers).
+</Aside>
+
+### Starting the App
+
+In the directory with the compose file and .env file, run the following command in the terminal to start the app:
+
+```sh
+docker compose up
+
+## To start in the background
+docker compose up -d
+
+```

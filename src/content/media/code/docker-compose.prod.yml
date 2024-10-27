@@ -35,7 +35,7 @@ services:
 
   db:
     container_name: code-tutorial-db-prod
-    image: postgres:14
+    image: pgvector/pgvector:pg14
     ports:
       - "5432:5432"
     environment:
@@ -56,7 +56,7 @@ services:
 
   app:
     container_name: code-tutorial-app-prod
-    image: soumame/tutoriallm:latest # Docker Hubのイメージを指定
+    image: soumame/tutoriallm:latest
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.code-tutorial-app-prod-http.rule=Host(`$DOMAIN`)"
@@ -81,8 +81,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - WATCHTOWER_CLEANUP=true # 古いイメージを自動的に削除
-      - WATCHTOWER_POLL_INTERVAL=300 # 5分間隔でチェック（必要に応じて変更可能）
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
 
 volumes:
   db_data_db:
