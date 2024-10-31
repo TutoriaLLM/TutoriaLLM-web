@@ -8,6 +8,13 @@ info:
   contact:
     name: TutoriaLLM
     url: https://tutoriallm.com
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://demo.tutoriallm.com
+    description: Demo server
+  - url: https://localhost
+    description: Production server
 paths:
   /admin/config/update:
     post:
@@ -888,29 +895,6 @@ paths:
                       type: array
                       items:
                         type: string
-        "500":
-          description: Failed to fetch tutorials
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: Failed to fetch tutorials
-  /tutorial/{id}:
-    get:
-      description: Returns the content of a tutorial
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: The content of the tutorial
-          content:
-            application/json:
-              schema:
-                type: object
         "404":
           description: Not Found
           content:
@@ -919,12 +903,12 @@ paths:
                 type: string
                 example: Not Found
         "500":
-          description: Failed to fetch tutorial
+          description: Failed to fetch tutorials
           content:
             text/plain:
               schema:
                 type: string
-                example: Failed to fetch tutorial
+                example: Failed to fetch tutorials
   /tutorial/tags:
     get:
       description: Returns all tags used in tutorials
