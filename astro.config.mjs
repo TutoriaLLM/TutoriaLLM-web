@@ -49,6 +49,7 @@ export default defineConfig({
       },
       social: {
         github: "https://github.com/tutoriallm/",
+        discord: "https://discord.gg/zxuREnWVXC",
       },
       sidebar: [
         {
