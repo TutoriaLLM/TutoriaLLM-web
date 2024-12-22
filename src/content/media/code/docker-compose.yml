@@ -1,68 +1,24 @@
 services:
-  redis:
-    #実稼働ではredis/redis-stack-serverを使用する
-    container_name: code-tutorial-redis-dev
-    image: redis/redis-stack:latest
-    ports:
-      - "6379:6379"
   db:
-    container_name: code-tutorial-db-dev
+    container_name: tutoriallm_db
     image: pgvector/pgvector:pg14
     ports:
       - "5432:5432"
+    env_file:
+      - ./apps/backend/.env
     environment:
-      POSTGRES_USER: $DB_USER
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_DB: $DB_NAME
-      PGDATA: /var/lib/postgresql/data/pgdata
-      TZ: UTC
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - TZ=UTC
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'"]
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
       interval: 5s
       timeout: 60s
       retries: 5
       start_period: 5s
     volumes:
       - db_data_db:/var/lib/postgresql/data
-  app:
-    container_name: code-tutorial-app-dev
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - "3000:3000"
-      - "3001:3001"
-    env_file:
-      - .env
-    command: >
-      sh -c "
-        if [ ! -f /initialized/.initialized ]; then
-          pnpm install &&
-          pnpm run drizzle:generate &&
-          pnpm run drizzle:push &&
-          pnpm run reset-credential &&
-          touch /initialized/.initialized &&
-          pnpm run dev 
-        else
-          pnpm install &&
-          pnpm run drizzle:generate &&
-          pnpm run drizzle:push &&
-          pnpm run dev;
-        fi
-      "
-    develop:
-      watch:
-        - action: sync
-          path: ./src
-          target: /tutorial_app_dev/src
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: package.json
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./app_data:/initialized # アプリの初期化を行うためのファイルをマウント
 volumes:
   db_data_db:

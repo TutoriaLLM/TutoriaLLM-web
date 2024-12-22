@@ -14,18 +14,22 @@ import {
   Code,
 } from "@astrojs/starlight/components";
 
-## Docker の利用
+## アプリケーションのホスト方法
 
-TutoriaLLM では、Docker を使用して、アプリを開発したり、ホストしたりすることができます。
-TutoriaLLM の基本的な部分は Docker イメージとして提供されており、Docker compose などを使用してデータベースと接続した上で、サーバーにデプロイすることができます。以下の手順に従ってアプリをサーバーにデプロイしてください。
+TutoriaLLMをホストするには、フロントエンド、バックエンド、データベースを準備する必要があります。以下では、Docker composeと任意のホスティングサービスを使用して、TutoriaLLM アプリをホストする方法を説明します。
 
 <Aside type="note" title="Dockerについて">
   Dockerについての情報は、[Docker](https://www.docker.com/)の公式サイトを参照してください。
 </Aside>
 
-## デプロイ先のサーバーの準備
+<Aside type="note" title="変更点">
+  v1.0より、フロントエンドのdockerイメージの提供は終了しました。分離されたリポジトリ構成となったため、Viteをビルドする際にバックエンドのAPIエンドポイントを指定する必要があります。
+</Aside>
 
-Docker がインストールされているサーバーや、パソコンを準備してください。
+## バックエンドとデータベースのホスト
+
+バックエンドとデータベースをホストするには、Docker compose を使用します。以下の手順に従って、TutoriaLLM アプリをホストしてみましょう。
+Docker がインストールされているサーバー(VPSなど)や、パソコンを準備してください。
 
 <Aside type="caution" title="注意！">
   注意：SSL が必須のプラットフォームにデプロイすると、Minecraft関連の
@@ -34,14 +38,14 @@ Docker がインストールされているサーバーや、パソコンを準�
   を無効にするか、Minecraft-Core 拡張機能を無効にする必要があります。
 </Aside>
 
-## イメージの取得
+### バックエンドのDockerイメージの取得
 
 イメージは、Docker Hub にて利用可能です。さまざまなバージョンが提供されていますが、Latest（最新版）の利用をお勧めします。
-イメージを利用するには、Pgvector(または Vector が利用できる PostgreSQL),Redis と接続する必要があります。
+イメージを利用するには、Pgvector(または Vector が利用できる PostgreSQL) と接続する必要があります。
 
 <LinkCard
-  title="Docker Hub - TutoriaLLM"
-  link="https://hub.docker.com/repository/docker/soumame/tutoriallm/general"
+  title="Docker Hub - TutoriaLLM_api"
+  href="https://hub.docker.com/r/soumame/tutoriallm_api"
 />
 
 ### バージョンについて
@@ -57,7 +61,7 @@ TutoriaLLM では、安定性を確保するため、複数のバージョンを
 
 import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 
-以下は実稼働で利用できる`docker-compose.yml`ファイルの例です：
+以下は実稼働で利用できる`docker-compose.yml`ファイルの例です。
 
 <Aside type="note" title="ノート">
   このファイルは、[GitHubリポジトリ](https://github.com/TutoriaLLM/TutoriaLLM/)
@@ -73,13 +77,11 @@ import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 - OPENAI_API_KEY - OpenAI API を使用するためのキー
 - OPENAI_API_ENDPOINT - OpenAI API のエンドポイント。設定しない場合はデフォルトのエンドポイントを使用します。
 
-- DB_USER - データベースのユーザー名
-- DB_PASSWORD - データベースのパスワード
-- DB_PORT - データベースのポート番号(例: 5432)
-- DB_HOST - データベースのホスト名。(例: 'db')
-- DB_NAME - データベースの名前。
-
-- REDIS_HOST - Redis のホスト名
+- POSTGRES_USER - データベースのユーザー名
+- POSTGRES_PASSWORD - データベースのパスワード
+- DB_PORT=5432 - データベースのポート番号
+- POSTGRES_DB - データベースの名前
+- DB_HOST - データベースのホスト名
 
 - DEFAULT_USER_NAME - デフォルトのユーザー名。
 - DEFAULT_USER_PASSWORD - デフォルトのユーザーパスワード。
@@ -88,6 +90,8 @@ import composeProdExample from "../../media/code/docker-compose.prod.yml?raw";
 
 - DOMAIN - アプリのドメイン名。自動 SSL 設定に利用します
 - EMAIL - アプリのメールアドレス。自動 SSL 設定に利用します
+
+- CORS_ORIGIN - CORS の設定。フロントエンドの URL を設定します。
 
 <Aside type="caution" title="注意！">
   注意：TutoriaLLMでは、OpenAIのキーから複数のサービスを利用しています。Tier
@@ -108,3 +112,45 @@ docker compose up
 docker compose up -d
 
 ```
+
+## フロントエンドのホスト
+
+フロントエンドのホストには、いくつかの方法がありますが、ここではVercelやNetlifyを使用してホストする場合の手順を説明します。
+
+### リポジトリのフォーク
+
+GitHub リポジトリをフォークします。
+
+<LinkCard
+  title="GitHub リポジトリ"
+  description="TutoriaLLM の GitHub リポジトリを確認してください。"
+  href="https://github.com/TutoriaLLM/TutoriaLLM"
+/>
+
+### ホスティング
+
+任意のホスティングサービスに、以下の設定を行い、デプロイします。
+
+<Aside type="caution" title="注意！">
+  ホスティングサービスでホストを行う際には、ルートから直接ビルドを行ってください。
+  フロントエンドをビルドする前に、バックエンドと拡張機能をビルドする必要があります。
+</Aside>
+
+#### 環境変数の設定
+
+- VITE_BACKEND_URL - バックエンドの API エンドポイント
+
+#### ビルド設定
+
+ルートディレクトリから全てのパッケージをビルドします。`pnpm build:all` コマンドを使用してください。
+
+- ビルドコマンド: `pnpm build:all`
+  そして、ビルドされたフロントエンドファイルをホスティングサービスにアップロードします。
+- ビルドディレクトリ: `/apps/frontend/dist`
+
+### Dockerを利用する場合
+
+フロントエンドのファイルをビルドする際に、環境変数を設定する必要があるため、
+Docker Hubにはフロントエンドのイメージは提供されていません。
+リポジトリにある`Dockerfile`ではフロントエンドのイメージを作成するための定義が利用できるため、
+そのファイルを利用してイメージをビルドしてください。

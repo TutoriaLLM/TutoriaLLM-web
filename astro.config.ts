@@ -12,14 +12,14 @@ export default defineConfig({
         starlightOpenAPI([
           {
             base: "api",
-            label: "API(ja)",
+            label: "API リファレンス",
             schema: "./schema/api-schema.yaml",
           },
-          // {
-          //   base: "/en/api",
-          //   label: "API(en)",
-          //   schema: "./schema/api-schema.yaml",
-          // },
+          {
+            base: "en/api",
+            label: "API Reference",
+            schema: "./schema/api-schema.yaml",
+          },
         ]),
       ],
       title: "TutoriaLLM",
